@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>HELLCODE AI</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Consolas",monospace;
+}
+
+body{
+    height:100vh;
+    background:#020202;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    color:white;
+}
+
+/* Fundo animado */
+
+body::before{
+    content:"";
+    position:absolute;
+    width:200%;
+    height:200%;
+    background:
+    radial-gradient(circle,rgba(255,0,0,.25),transparent 40%);
+    animation:rotateBg 15s linear infinite;
+}
+
+@keyframes rotateBg{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+
+/* Container */
+
+.chat{
+    position:relative;
+    width:95%;
+    max-width:1000px;
+    height:90vh;
+
+    background:#080808;
+    border:2px solid #ff0000;
+    border-radius:20px;
+
+    box-shadow:
+    0 0 20px red,
+    0 0 60px #660000;
+
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+
+/* Topo */
+
+.header{
+
+    height:70px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#111;
+
+    border-bottom:2px solid red;
+
+    font-size:28px;
+    font-weight:bold;
+
+    letter-spacing:6px;
+
+    color:red;
+
+    text-shadow:
+    0 0 10px red,
+    0 0 30px red;
+
+}
+
+
+/* Área mensagens */
+
+.messages{
+
+    flex:1;
+
+    padding:20px;
+
+    overflow-y:auto;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+
+/* Mensagens */
+
+.msg{
+
+    max-width:85%;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    animation:show .3s ease;
+
+    line-height:1.5;
+
+    white-space:pre-wrap;
+
+}
+
+
+@keyframes show{
+
+from{
+
+opacity:0;
+
+transform:translateY(20px);
+
+}
+
+}
+
+
+/* Usuário */
+
+.user{
+
+    align-self:flex-end;
+
+    background:#990000;
+
+    box-shadow:
+    0 0 15px red;
+
+}
+
+
+/* IA */
+
+.ai{
+
+    align-self:flex-start;
+
+    background:#111;
+
+    border:1px solid red;
+
+    color:#ff5555;
+
+    box-shadow:
+    0 0 10px #550000;
+
+}
+
+
+/* Painel inferior */
+
+.bottom{
+
+    padding:15px;
+
+    display:flex;
+
+    gap:10px;
+
+    background:#111;
+
+    border-top:2px solid red;
+
+}
+
+
+/* Input */
+
+input{
+
+    flex:1;
+
+    padding:15px;
+
+    background:#000;
+
+    color:red;
+
+    border:1px solid red;
+
+    border-radius:10px;
+
+    outline:none;
+
+    font-size:16px;
+
+}
+
+
+button{
+
+    width:130px;
+
+    background:red;
+
+    border:none;
+
+    border-radius:10px;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+button:hover{
+
+    transform:scale(1.08);
+
+    box-shadow:
+    0 0 20px red;
+
+}
+
+
+/* API Key */
+
+.api{
+
+    position:absolute;
+
+    top:15px;
+
+    right:20px;
+
+}
+
+
+.api input{
+
+    width:220px;
+
+    padding:8px;
+
+    font-size:12px;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="chat">
+
+
+<div class="header">
+
+☠ HELLCODE AI ☠
+
+</div>
+
+
+<div class="api">
+
+<input 
+id="apiKey"
+type="password"
+placeholder="API KEY">
+
+</div>
+
+
+
+<div class="messages" id="msgs">
+
+
+<div class="msg ai">
+
+🔥 HELLCODE AI ONLINE
+
+Especialista em programação ativado.
+
+Digite sua pergunta...
+
+</div>
+
+
+</div>
+
+
+
+<div class="bottom">
+
+<input 
+id="texto"
+placeholder="Digite sua mensagem...">
+
+<button onclick="enviar()">
+
+ENVIAR
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+<script>
+
+// Parte 2 vai aqui
+
+</script>
+
+
+</body>
+  </html>
