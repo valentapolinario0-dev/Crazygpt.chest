@@ -2,778 +2,242 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>HELLCODE AI</title>
 
 <style>
-
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:"Consolas",monospace;
+box-sizing:border-box;
+font-family:Consolas,monospace;
 }
 
 body{
-    height:100vh;
-    background:#020202;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
-    color:white;
+margin:0;
+height:100vh;
+background:#020202;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
 }
 
-/* Fundo animado */
-
-body::before{
-    content:"";
-    position:absolute;
-    width:200%;
-    height:200%;
-    background:
-    radial-gradient(circle,rgba(255,0,0,.25),transparent 40%);
-    animation:rotateBg 15s linear infinite;
+body:before{
+content:"";
+position:absolute;
+width:200%;
+height:200%;
+background:radial-gradient(circle,rgba(255,0,0,.25),transparent 40%);
+animation:rot 15s linear infinite;
+z-index:-1;
 }
 
-@keyframes rotateBg{
-    from{
-        transform:rotate(0deg);
-    }
-    to{
-        transform:rotate(360deg);
-    }
+@keyframes rot{
+to{transform:rotate(360deg)}
 }
-
-
-/* Container */
 
 .chat{
-    position:relative;
-    width:95%;
-    max-width:1000px;
-    height:90vh;
-
-    background:#080808;
-    border:2px solid #ff0000;
-    border-radius:20px;
-
-    box-shadow:
-    0 0 20px red,
-    0 0 60px #660000;
-
-    display:flex;
-    flex-direction:column;
-    overflow:hidden;
+width:95%;
+max-width:900px;
+height:90vh;
+background:#080808;
+border:2px solid red;
+border-radius:20px;
+box-shadow:0 0 30px red;
+display:flex;
+flex-direction:column;
+overflow:hidden;
 }
-
-
-/* Topo */
 
 .header{
-
-    height:70px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    background:#111;
-
-    border-bottom:2px solid red;
-
-    font-size:28px;
-    font-weight:bold;
-
-    letter-spacing:6px;
-
-    color:red;
-
-    text-shadow:
-    0 0 10px red,
-    0 0 30px red;
-
+height:70px;
+background:#111;
+border-bottom:2px solid red;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:26px;
+color:red;
+text-shadow:0 0 15px red;
 }
-
-
-/* Área mensagens */
-
-.messages{
-
-    flex:1;
-
-    padding:20px;
-
-    overflow-y:auto;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:15px;
-
-}
-
-
-/* Mensagens */
-
-.msg{
-
-    max-width:85%;
-
-    padding:15px;
-
-    border-radius:15px;
-
-    animation:show .3s ease;
-
-    line-height:1.5;
-
-    white-space:pre-wrap;
-
-}
-
-
-@keyframes show{
-
-from{
-
-opacity:0;
-
-transform:translateY(20px);
-
-}
-
-}
-
-
-/* Usuário */
-
-.user{
-
-    align-self:flex-end;
-
-    background:#990000;
-
-    box-shadow:
-    0 0 15px red;
-
-}
-
-
-/* IA */
-
-.ai{
-
-    align-self:flex-start;
-
-    background:#111;
-
-    border:1px solid red;
-
-    color:#ff5555;
-
-    box-shadow:
-    0 0 10px #550000;
-
-}
-
-
-/* Painel inferior */
-
-.bottom{
-
-    padding:15px;
-
-    display:flex;
-
-    gap:10px;
-
-    background:#111;
-
-    border-top:2px solid red;
-
-}
-
-
-/* Input */
-
-input{
-
-    flex:1;
-
-    padding:15px;
-
-    background:#000;
-
-    color:red;
-
-    border:1px solid red;
-
-    border-radius:10px;
-
-    outline:none;
-
-    font-size:16px;
-
-}
-
-
-button{
-
-    width:130px;
-
-    background:red;
-
-    border:none;
-
-    border-radius:10px;
-
-    color:white;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    transition:.3s;
-
-}
-
-
-button:hover{
-
-    transform:scale(1.08);
-
-    box-shadow:
-    0 0 20px red;
-
-}
-
-
-/* API Key */
 
 .api{
-
-    position:absolute;
-
-    top:15px;
-
-    right:20px;
-
+position:absolute;
+top:20px;
+right:20px;
 }
 
+.api input,
+#texto{
+background:#000;
+color:red;
+border:1px solid red;
+padding:12px;
+border-radius:10px;
+}
 
 .api input{
-
-    width:220px;
-
-    padding:8px;
-
-    font-size:12px;
-
+width:170px;
 }
 
+.msgs{
+flex:1;
+padding:20px;
+overflow:auto;
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.msg{
+padding:12px;
+border-radius:15px;
+max-width:80%;
+white-space:pre-wrap;
+animation:show .3s;
+}
+
+@keyframes show{
+from{opacity:0;transform:translateY(15px)}
+}
+
+.ai{
+background:#111;
+border:1px solid red;
+color:#ff6666;
+align-self:flex-start;
+}
+
+.user{
+background:#900;
+align-self:flex-end;
+}
+
+.bottom{
+display:flex;
+gap:10px;
+padding:15px;
+background:#111;
+border-top:2px solid red;
+}
+
+#texto{
+flex:1;
+}
+
+button{
+width:120px;
+background:red;
+color:white;
+border:0;
+border-radius:10px;
+font-weight:bold;
+}
 </style>
-
 </head>
-
 
 <body>
 
-
 <div class="chat">
 
-
 <div class="header">
-
 ☠ HELLCODE AI ☠
-
 </div>
-
 
 <div class="api">
-
-<input 
-id="apiKey"
-type="password"
-placeholder="API KEY">
-
+<input id="apiKey" type="password" placeholder="API KEY">
 </div>
 
-
-
-<div class="messages" id="msgs">
-
-
+<div class="msgs" id="msgs">
 <div class="msg ai">
-
 🔥 HELLCODE AI ONLINE
 
-Especialista em programação ativado.
-
-Digite sua pergunta...
-
+Digite sua mensagem...
 </div>
-
-
 </div>
-
-
 
 <div class="bottom">
-
-<input 
-id="texto"
-placeholder="Digite sua mensagem...">
-
-<button onclick="enviar()">
-
-ENVIAR
-
-</button>
-
-
+<input id="texto" placeholder="Digite aqui...">
+<button onclick="enviar()">ENVIAR</button>
 </div>
-
 
 </div>
 
 
 <script>
 
-// Parte 2 vai aqui
+const msgs=document.getElementById("msgs");
+const texto=document.getElementById("texto");
 
-</script>
+let historico=JSON.parse(localStorage.getItem("hellcode"))||[];
 
-
-</body>
-  </html>
-
-// ======================================
-// HELLCODE AI - SISTEMA DE CHAT
-// PARTE 2/3
-// ======================================
+historico.forEach(m=>{
+addMsg(m.text,m.type);
+});
 
 
-const msgs = document.getElementById("msgs");
-const texto = document.getElementById("texto");
-const apiKey = document.getElementById("apiKey");
+function addMsg(text,type){
+
+let div=document.createElement("div");
+
+div.className="msg "+type;
+
+div.innerText=text;
+
+msgs.appendChild(div);
+
+msgs.scrollTop=msgs.scrollHeight;
+
+}
 
 
-// Prompt de personalidade da IA
+async function enviar(){
 
-const SYSTEM_PROMPT = `
-Você é HELLCODE AI.
+let pergunta=texto.value.trim();
 
-Especialista em programação:
+if(!pergunta)return;
 
-HTML
-CSS
-JavaScript
-TypeScript
-Python
-Lua/Luau
-C/C++
-C#
-Java
-Kotlin
-PHP
-SQL
-React
-Node.js
-APIs
-Git
-Docker
-Linux
-Android
-Roblox Studio
+addMsg(pergunta,"user");
 
-Regras:
-- Responda como um programador sênior.
-- Gere código organizado.
-- Explique bugs.
-- Melhore desempenho.
-- Use boas práticas.
-- Seja técnico e direto.
-`;
+texto.value="";
 
-
-// ======================================
-// CARREGAR HISTÓRICO
-// ======================================
-
-
-let historico = JSON.parse(
-localStorage.getItem("hellcode_history")
-) || [];
-
-
-function salvar(){
+historico.push({
+text:pergunta,
+type:"user"
+});
 
 localStorage.setItem(
-"hellcode_history",
+"hellcode",
+JSON.stringify(historico)
+);
+
+
+let resposta=
+"🤖 HELLCODE AI:\n\n"+
+"Mensagem recebida. Conecte uma API no JavaScript para respostas reais.";
+
+addMsg(resposta,"ai");
+
+
+historico.push({
+text:resposta,
+type:"ai"
+});
+
+localStorage.setItem(
+"hellcode",
 JSON.stringify(historico)
 );
 
 }
 
 
-
-// ======================================
-// MOSTRAR MENSAGEM
-// ======================================
-
-
-function adicionarMensagem(texto,tipo){
-
-let div=document.createElement("div");
-
-div.className="msg "+tipo;
-
-
-// Markdown básico
-
-texto = texto
-.replace(/```([\s\S]*?)```/g,
-"<pre>$1</pre>")
-.replace(/\*\*(.*?)\*\*/g,
-"<b>$1</b>")
-.replace(/\n/g,"<br>");
-
-
-div.innerHTML=texto;
-
-
-msgs.appendChild(div);
-
-
-msgs.scrollTop=msgs.scrollHeight;
-
-
-}
-
-
-// ======================================
-// RESTAURAR CHAT
-// ======================================
-
-
-historico.forEach(m=>{
-
-adicionarMensagem(
-m.content,
-m.role==="user"?"user":"ai"
-);
-
+texto.addEventListener("keydown",e=>{
+if(e.key==="Enter") enviar();
 });
 
 
+</script>
 
-// ======================================
-// ENVIAR
-// ======================================
-
-
-async function enviar(){
-
-
-let pergunta=texto.value.trim();
-
-
-if(!pergunta)return;
-
-
-
-adicionarMensagem(
-pergunta,
-"user"
-);
-
-
-
-historico.push({
-
-role:"user",
-
-content:pergunta
-
-});
-
-
-salvar();
-
-
-texto.value="";
-
-
-
-// efeito digitando
-
-let digitando=document.createElement("div");
-
-digitando.className="msg ai";
-
-digitando.id="digitando";
-
-digitando.innerHTML="HELLCODE está pensando...";
-
-msgs.appendChild(digitando);
-
-
-
-msgs.scrollTop=msgs.scrollHeight;
-
-
-
-// PARTE 3 vai conectar a API aqui
-
-
-setTimeout(()=>{
-
-let d=document.getElementById("digitando");
-
-if(d){
-
-d.remove();
-
-}
-
-
-adicionarMensagem(
-
-"⚠ Sistema aguardando conexão com API.<br><br>Adicione a integração na PARTE 3.",
-
-"ai"
-
-);
-
-
-},800);
-
-
-
-}
-
-
-// Enter envia
-
-texto.addEventListener(
-"keydown",
-(e)=>{
-
-if(e.key==="Enter"){
-
-enviar();
-
-}
-
-});
-
-
-
-// ======================================
-// SALVAR API KEY
-// ======================================
-
-
-apiKey.value =
-localStorage.getItem("api_key") || "";
-
-
-apiKey.addEventListener(
-"change",
-()=>{
-
-localStorage.setItem(
-"api_key",
-apiKey.value
-);
-
-});
-
-
-// ======================================
-// HELLCODE AI - API CONNECT
-// PARTE 3/3
-// ======================================
-
-
-async function chamarIA(pergunta){
-
-
-const key = apiKey.value.trim();
-
-
-if(!key){
-
-return "⚠ Coloque sua API Key primeiro.";
-
-}
-
-
-
-const mensagens=[
-
-{
-role:"system",
-content:SYSTEM_PROMPT
-},
-
-...historico
-
-];
-
-
-
-try{
-
-
-const resposta = await fetch(
-"https://api.openai.com/v1/chat/completions",
-{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":"application/json",
-
-"Authorization":"Bearer "+key
-
-},
-
-
-body:JSON.stringify({
-
-model:"gpt-4.1-mini",
-
-messages:mensagens,
-
-temperature:0.7
-
-})
-
-}
-
-
-);
-
-
-
-const dados=await resposta.json();
-
-
-
-if(dados.error){
-
-return "Erro da API: "+dados.error.message;
-
-}
-
-
-
-return dados.choices[0].message.content;
-
-
-
-}
-
-catch(e){
-
-return "Erro de conexão: "+e.message;
-
-}
-
-
-}
-
-
-
-// ======================================
-// SUBSTITUIR RESPOSTA FALSA POR IA REAL
-// ======================================
-
-
-async function enviar(){
-
-
-let pergunta=texto.value.trim();
-
-
-if(!pergunta)return;
-
-
-
-adicionarMensagem(
-pergunta,
-"user"
-);
-
-
-
-historico.push({
-
-role:"user",
-
-content:pergunta
-
-});
-
-
-salvar();
-
-
-
-texto.value="";
-
-
-
-let digitando=document.createElement("div");
-
-digitando.className="msg ai";
-
-digitando.id="digitando";
-
-digitando.innerHTML=
-"🔥 HELLCODE PROCESSANDO...";
-
-
-msgs.appendChild(digitando);
-
-
-
-msgs.scrollTop=msgs.scrollHeight;
-
-
-
-let resposta = await chamarIA(pergunta);
-
-
-
-let d=document.getElementById("digitando");
-
-if(d)d.remove();
-
-
-
-adicionarMensagem(
-resposta,
-"ai"
-);
-
-
-
-historico.push({
-
-role:"assistant",
-
-content:resposta
-
-});
-
-
-salvar();
-
-
-}
+</body>
+</html>
