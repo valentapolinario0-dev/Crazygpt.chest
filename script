@@ -1,0 +1,241 @@
+// ======================================
+// HELLCODE AI - SISTEMA DE CHAT
+// PARTE 2/3
+// ======================================
+
+
+const msgs = document.getElementById("msgs");
+const texto = document.getElementById("texto");
+const apiKey = document.getElementById("apiKey");
+
+
+// Prompt de personalidade da IA
+
+const SYSTEM_PROMPT = `
+Você é HELLCODE AI.
+
+Especialista em programação:
+
+HTML
+CSS
+JavaScript
+TypeScript
+Python
+Lua/Luau
+C/C++
+C#
+Java
+Kotlin
+PHP
+SQL
+React
+Node.js
+APIs
+Git
+Docker
+Linux
+Android
+Roblox Studio
+
+Regras:
+- Responda como um programador sênior.
+- Gere código organizado.
+- Explique bugs.
+- Melhore desempenho.
+- Use boas práticas.
+- Seja técnico e direto.
+`;
+
+
+// ======================================
+// CARREGAR HISTÓRICO
+// ======================================
+
+
+let historico = JSON.parse(
+localStorage.getItem("hellcode_history")
+) || [];
+
+
+function salvar(){
+
+localStorage.setItem(
+"hellcode_history",
+JSON.stringify(historico)
+);
+
+}
+
+
+
+// ======================================
+// MOSTRAR MENSAGEM
+// ======================================
+
+
+function adicionarMensagem(texto,tipo){
+
+let div=document.createElement("div");
+
+div.className="msg "+tipo;
+
+
+// Markdown básico
+
+texto = texto
+.replace(/```([\s\S]*?)```/g,
+"<pre>$1</pre>")
+.replace(/\*\*(.*?)\*\*/g,
+"<b>$1</b>")
+.replace(/\n/g,"<br>");
+
+
+div.innerHTML=texto;
+
+
+msgs.appendChild(div);
+
+
+msgs.scrollTop=msgs.scrollHeight;
+
+
+}
+
+
+// ======================================
+// RESTAURAR CHAT
+// ======================================
+
+
+historico.forEach(m=>{
+
+adicionarMensagem(
+m.content,
+m.role==="user"?"user":"ai"
+);
+
+});
+
+
+
+// ======================================
+// ENVIAR
+// ======================================
+
+
+async function enviar(){
+
+
+let pergunta=texto.value.trim();
+
+
+if(!pergunta)return;
+
+
+
+adicionarMensagem(
+pergunta,
+"user"
+);
+
+
+
+historico.push({
+
+role:"user",
+
+content:pergunta
+
+});
+
+
+salvar();
+
+
+texto.value="";
+
+
+
+// efeito digitando
+
+let digitando=document.createElement("div");
+
+digitando.className="msg ai";
+
+digitando.id="digitando";
+
+digitando.innerHTML="HELLCODE está pensando...";
+
+msgs.appendChild(digitando);
+
+
+
+msgs.scrollTop=msgs.scrollHeight;
+
+
+
+// PARTE 3 vai conectar a API aqui
+
+
+setTimeout(()=>{
+
+let d=document.getElementById("digitando");
+
+if(d){
+
+d.remove();
+
+}
+
+
+adicionarMensagem(
+
+"⚠ Sistema aguardando conexão com API.<br><br>Adicione a integração na PARTE 3.",
+
+"ai"
+
+);
+
+
+},800);
+
+
+
+}
+
+
+// Enter envia
+
+texto.addEventListener(
+"keydown",
+(e)=>{
+
+if(e.key==="Enter"){
+
+enviar();
+
+}
+
+});
+
+
+
+// ======================================
+// SALVAR API KEY
+// ======================================
+
+
+apiKey.value =
+localStorage.getItem("api_key") || "";
+
+
+apiKey.addEventListener(
+"change",
+()=>{
+
+localStorage.setItem(
+"api_key",
+apiKey.value
+);
+
+});
