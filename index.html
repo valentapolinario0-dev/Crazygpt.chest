@@ -212,9 +212,21 @@ JSON.stringify(historico)
 );
 
 
-let resposta=
-"🤖 HELLCODE AI:\n\n"+
-"Mensagem recebida. Conecte uma API no JavaScript para respostas reais.";
+let r = await fetch("COLE_A_URL_DO_SEU_WORKER_AQUI", {
+    method:"POST",
+    headers:{
+        "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+        message: pergunta
+    })
+});
+
+let data = await r.json();
+
+let resposta = data.reply;
+
+addMsg(resposta,"ai");
 
 addMsg(resposta,"ai");
 
