@@ -349,3 +349,431 @@ ENVIAR
 
 </body>
   </html>
+
+// ======================================
+// HELLCODE AI - SISTEMA DE CHAT
+// PARTE 2/3
+// ======================================
+
+
+const msgs = document.getElementById("msgs");
+const texto = document.getElementById("texto");
+const apiKey = document.getElementById("apiKey");
+
+
+// Prompt de personalidade da IA
+
+const SYSTEM_PROMPT = `
+Você é HELLCODE AI.
+
+Especialista em programação:
+
+HTML
+CSS
+JavaScript
+TypeScript
+Python
+Lua/Luau
+C/C++
+C#
+Java
+Kotlin
+PHP
+SQL
+React
+Node.js
+APIs
+Git
+Docker
+Linux
+Android
+Roblox Studio
+
+Regras:
+- Responda como um programador sênior.
+- Gere código organizado.
+- Explique bugs.
+- Melhore desempenho.
+- Use boas práticas.
+- Seja técnico e direto.
+`;
+
+
+// ======================================
+// CARREGAR HISTÓRICO
+// ======================================
+
+
+let historico = JSON.parse(
+localStorage.getItem("hellcode_history")
+) || [];
+
+
+function salvar(){
+
+localStorage.setItem(
+"hellcode_history",
+JSON.stringify(historico)
+);
+
+}
+
+
+
+// ======================================
+// MOSTRAR MENSAGEM
+// ======================================
+
+
+function adicionarMensagem(texto,tipo){
+
+let div=document.createElement("div");
+
+div.className="msg "+tipo;
+
+
+// Markdown básico
+
+texto = texto
+.replace(/```([\s\S]*?)```/g,
+"<pre>$1</pre>")
+.replace(/\*\*(.*?)\*\*/g,
+"<b>$1</b>")
+.replace(/\n/g,"<br>");
+
+
+div.innerHTML=texto;
+
+
+msgs.appendChild(div);
+
+
+msgs.scrollTop=msgs.scrollHeight;
+
+
+}
+
+
+// ======================================
+// RESTAURAR CHAT
+// ======================================
+
+
+historico.forEach(m=>{
+
+adicionarMensagem(
+m.content,
+m.role==="user"?"user":"ai"
+);
+
+});
+
+
+
+// ======================================
+// ENVIAR
+// ======================================
+
+
+async function enviar(){
+
+
+let pergunta=texto.value.trim();
+
+
+if(!pergunta)return;
+
+
+
+adicionarMensagem(
+pergunta,
+"user"
+);
+
+
+
+historico.push({
+
+role:"user",
+
+content:pergunta
+
+});
+
+
+salvar();
+
+
+texto.value="";
+
+
+
+// efeito digitando
+
+let digitando=document.createElement("div");
+
+digitando.className="msg ai";
+
+digitando.id="digitando";
+
+digitando.innerHTML="HELLCODE está pensando...";
+
+msgs.appendChild(digitando);
+
+
+
+msgs.scrollTop=msgs.scrollHeight;
+
+
+
+// PARTE 3 vai conectar a API aqui
+
+
+setTimeout(()=>{
+
+let d=document.getElementById("digitando");
+
+if(d){
+
+d.remove();
+
+}
+
+
+adicionarMensagem(
+
+"⚠ Sistema aguardando conexão com API.<br><br>Adicione a integração na PARTE 3.",
+
+"ai"
+
+);
+
+
+},800);
+
+
+
+}
+
+
+// Enter envia
+
+texto.addEventListener(
+"keydown",
+(e)=>{
+
+if(e.key==="Enter"){
+
+enviar();
+
+}
+
+});
+
+
+
+// ======================================
+// SALVAR API KEY
+// ======================================
+
+
+apiKey.value =
+localStorage.getItem("api_key") || "";
+
+
+apiKey.addEventListener(
+"change",
+()=>{
+
+localStorage.setItem(
+"api_key",
+apiKey.value
+);
+
+});
+
+
+// ======================================
+// HELLCODE AI - API CONNECT
+// PARTE 3/3
+// ======================================
+
+
+async function chamarIA(pergunta){
+
+
+const key = apiKey.value.trim();
+
+
+if(!key){
+
+return "⚠ Coloque sua API Key primeiro.";
+
+}
+
+
+
+const mensagens=[
+
+{
+role:"system",
+content:SYSTEM_PROMPT
+},
+
+...historico
+
+];
+
+
+
+try{
+
+
+const resposta = await fetch(
+"https://api.openai.com/v1/chat/completions",
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json",
+
+"Authorization":"Bearer "+key
+
+},
+
+
+body:JSON.stringify({
+
+model:"gpt-4.1-mini",
+
+messages:mensagens,
+
+temperature:0.7
+
+})
+
+}
+
+
+);
+
+
+
+const dados=await resposta.json();
+
+
+
+if(dados.error){
+
+return "Erro da API: "+dados.error.message;
+
+}
+
+
+
+return dados.choices[0].message.content;
+
+
+
+}
+
+catch(e){
+
+return "Erro de conexão: "+e.message;
+
+}
+
+
+}
+
+
+
+// ======================================
+// SUBSTITUIR RESPOSTA FALSA POR IA REAL
+// ======================================
+
+
+async function enviar(){
+
+
+let pergunta=texto.value.trim();
+
+
+if(!pergunta)return;
+
+
+
+adicionarMensagem(
+pergunta,
+"user"
+);
+
+
+
+historico.push({
+
+role:"user",
+
+content:pergunta
+
+});
+
+
+salvar();
+
+
+
+texto.value="";
+
+
+
+let digitando=document.createElement("div");
+
+digitando.className="msg ai";
+
+digitando.id="digitando";
+
+digitando.innerHTML=
+"🔥 HELLCODE PROCESSANDO...";
+
+
+msgs.appendChild(digitando);
+
+
+
+msgs.scrollTop=msgs.scrollHeight;
+
+
+
+let resposta = await chamarIA(pergunta);
+
+
+
+let d=document.getElementById("digitando");
+
+if(d)d.remove();
+
+
+
+adicionarMensagem(
+resposta,
+"ai"
+);
+
+
+
+historico.push({
+
+role:"assistant",
+
+content:resposta
+
+});
+
+
+salvar();
+
+
+}
